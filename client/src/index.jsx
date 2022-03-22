@@ -21,10 +21,25 @@ class App extends React.Component {
     })
     .then((response) => {
       console.log(`Response is ${response}`)
+      this.updateRepos()
     })
     .catch((err) => {
       console.log(err);
     })
+  }
+
+  updateRepos() {
+    axios.get('/repos')
+    .then((response) => {
+      let updatedRepos = [...response.data];
+      this.setState({
+        repos: updatedRepos
+      });
+    })
+  }
+
+  componentDidMount() {
+    this.updateRepos()
   }
 
   render () {

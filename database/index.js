@@ -5,26 +5,42 @@ mongoose.connect('mongodb://localhost/fetcher', {
 });
 
 let repoSchema = mongoose.Schema({
-  repo_id: Number,
+  _id: Number,
   repo_name: String,
   owner_id: Number,
   owner_name: String,
   forks: Number,
   watchers: Number,
+  url: String,
   updated_at: Date
 });
 
 let Repo = mongoose.model('Repo', repoSchema);
 
 let save = (repositories, callback) => {
-  console.log(repositories);
   Repo.insertMany(repositories)
     .then((response) => {
+      // console.log(response);
       console.log('Repositories inserted succesfully!');
       callback(response);
     })
 }
 
-// let
+let retrieve = (callback) => {
+  Repo.find({}).sort('-watchers')
+    .then((data) => {
+      callback(data);
+    })
+}
+
+let userCheck = (username, callback) => {
+  Repo.find({ owner_name: username })
+    .then((response) => {
+      console.log('User data check complete!')
+      callback(response);
+    })
+}
 
 module.exports.save = save;
+module.exports.retrieve = retrieve;
+module.exports.userCheck = userCheck;

@@ -1,16 +1,30 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/fetcher');
+mongoose.connect('mongodb://localhost/fetcher', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 let repoSchema = mongoose.Schema({
-  // TODO: your schema here!
+  repo_id: Number,
+  repo_name: String,
+  owner_id: Number,
+  owner_name: String,
+  forks: Number,
+  watchers: Number,
+  updated_at: Date
 });
 
 let Repo = mongoose.model('Repo', repoSchema);
 
-let save = (/* TODO */) => {
-  // TODO: Your code here
-  // This function should save a repo or repos to
-  // the MongoDB
+let save = (repositories, callback) => {
+  console.log(repositories);
+  Repo.insertMany(repositories)
+    .then((response) => {
+      console.log('Repositories inserted succesfully!');
+      callback(response);
+    })
 }
+
+// let
 
 module.exports.save = save;

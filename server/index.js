@@ -7,10 +7,6 @@ app.use(express.static(__dirname + '/../client/dist'));
 app.use(express.json());
 
 app.post('/repos', function (req, res) {
-  // TODO - your code here!
-  // This route should take the github username provided
-  // and get the repo information from the github API, then
-  // save the repo information in the database
   userCheck(req.body.username, (existingRepoData) => {
     if (existingRepoData.length) {
       res.send(existingRepoData);
@@ -26,8 +22,6 @@ app.post('/repos', function (req, res) {
 });
 
 app.get('/repos', function (req, res) {
-  // TODO - your code here!
-  // This route should send back the top 25 repos
   retrieve(data => {
     let dataLength;
     data.length >= 25 ? dataLength = 25 : dataLength = data.length;
@@ -36,10 +30,8 @@ app.get('/repos', function (req, res) {
       top25.push(data[i]);
     }
     res.send(top25);
-  })
-});
+  })});
 
-// let port = 1128;
 let port = process.env.PORT;
 if (port == null || port == '') {
   port = 1128;
